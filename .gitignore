@@ -1,0 +1,5 @@
+*.ctxt
+*.class
+/.bluej/
+bluej.pkh
++backup*/
