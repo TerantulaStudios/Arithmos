@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.TreeMap;
 
 public class Arithmos {
-    private static boolean isDeveloping = false;    //Turn true while developing the program
+    private static boolean isDeveloping = true;    //Turn true while developing the program
     private static Arithmos instance;
     static JFrame frame = new JFrame("Arithmos");
     static JTextPane display = new JTextPane(); 
@@ -1054,7 +1054,13 @@ public class Arithmos {
                             for (double d : mData) mSum += d;
                             v = mSum / mData.size();
                         } break;
-                            
+                        case "prime":
+                            if(isPrime((int)arg) == true){
+                                updateDisplay("true");
+                            }
+                            else if(isPrime((int)arg) == false){
+                                updateDisplay("false");
+                            }
                             
                         default: v = 0;
 
@@ -1200,11 +1206,18 @@ public class Arithmos {
 
     // Helper: Prime check for π(x)
     private static boolean isPrime(int n) {
-        if (n < 2) return false;
-        for (int i = 2; i * i <= n; i++) {
-            if (n % i == 0) return false;
+        int c = 0;
+        for(int i = 1; i <= n; i++){
+            if(n % i == 0){
+                c++;
+            }
         }
-        return true;
+        if(c == 2){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     static String formatPower(double base, double exponent) {
@@ -2489,6 +2502,14 @@ public class Arithmos {
     String[] b = {"M+", "M-", "MR", "MC", "abs", "ceil", "floor", "round", "max", "min", "mod", "rand", "nCr", "nPr", "stdev", "stdevp", "Σ", "mean", "%", ",", "7","8","9","÷","4","5","6","×","1","2","3","-",".","0","=","+","C","CE","√","^"};
     for(String s : b) p.add(createButton(s));
     return p;
+    }
+    
+    static JPanel createCheckPanel(){
+        JPanel p = new JPanel(new GridLayout(10, 4, 10, 10));
+        p.setBackground(currentTheme.bgColor);
+        String[] b = {"M+", "M-", "MR", "MC", "prime", "comp", "mark", "arms", "nvn", "kapr", "paln", "auto", "fib", "sqr", "cub", "mnch", "hpy", "spl", "perf", ")", "7","8","9","÷","4","5","6","×","1","2","3","-",".","0","=","+","C","CE","√","^"}; 
+        for(String s : b)p.add(createButton(s));
+        return p;
     }
     // PLACE THIS IN YOUR MAIN CLASS
     private static void handleContourCommand(String cmd) {
@@ -4679,16 +4700,16 @@ public class Arithmos {
     sideMenu.setBounds(0, 0, 240, 600);
     sideMenu.setVisible(false);
     sideMenu.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
-    if(isDeveloping == true){
+    //if(isDeveloping == true){
         String[] modes = {
-        "Standard", "Functions", "Graphing",
+        "Standard", "Functions", "Check", "Graphing",
         "Matrix", "Programmer", "Converter", "Other", "Settings", "Help"
         };
-    }
+    //}
     
-    String[] modes = { 
-        "Standard", "Functions", "Graphing", "Converter", "Help"
-    };
+    //String[] modes = { 
+    //    "Standard", "Functions", "Graphing", "Converter", "Help"
+    //};
     
 
     int yPos = 60;
@@ -4736,17 +4757,17 @@ public class Arithmos {
                 tabbedPane.setBackground(currentTheme.regularButton);
                 tabbedPane.setForeground(currentTheme.foreground);
                 resizeCalculator(450, 600);
-                if(isDeveloping == true){
+                //if(isDeveloping == true){
                 tabbedPane.add("Func", createFunctionPanel());
                 tabbedPane.add("aA", createAlphaPanel());
                 tabbedPane.add("2D", createGraphPanel());
                 tabbedPane.add("3D", create3DGraphPanel());
                 tabbedPane.add("Cont", contourPanel);
-                }
-                else{
-                    tabbedPane.add("2D", createGraphPanel());
-                    tabbedPane.add("3D", create3DGraphPanel());
-                }
+                //}
+                //else{
+                //    tabbedPane.add("2D", createGraphPanel());
+                 //   tabbedPane.add("3D", create3DGraphPanel());
+                //}
                 buttonsPanel.add(tabbedPane, BorderLayout.CENTER);
                 panelTitleLabel.setText("GRAPHING");
 
@@ -4797,6 +4818,11 @@ public class Arithmos {
                 buttonsPanel.add(createHelpPanel(), BorderLayout.CENTER);
                 resizeCalculator(450, 600);
                 panelTitleLabel.setText("HELP");
+            }
+            else if(mode.equals("Check")){
+                buttonsPanel.add(createCheckPanel(), BorderLayout.CENTER);
+                resizeCalculator(450, 600);
+                panelTitleLabel.setText("CHECK");
             }
 
             buttonsPanel.revalidate();
